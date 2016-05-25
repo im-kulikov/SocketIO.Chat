@@ -69,7 +69,7 @@ $(document).ready ->
   submitForm = (event) ->
     # Собираем данные:
     data =
-      message:  fields.message.val()
+      message:  replaceURLWithHTMLLinks(fields.message.val())
       name: fields.nickname.val()
       date: new Date()
 
@@ -88,6 +88,37 @@ $(document).ready ->
     # Возобновляем фокус:
     fields.message.focus()
 
+  # Находим ссылки в тексте
+  replaceURLWithHTMLLinks = (text) ->
+    exp = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
+
+    lowercase = text.toLowerCase()
+    parts = lowercase.match(exp)
+
+    if $.isArray(parts) == true
+      return lowercase.replace exp, '~ я дурак и меня нужно забанить ~'
+    else
+      return text
+
+  # Меняем имя:
+  changeName = (name)->
+    if 'localStorage' of window
+      localStorage.setItem 'nickname', name
+
+    if nickname != name
+      socket.emit('change name', name);
+
+    nickname = name
+    fields.nickname.val(name)
+    $.cookie('nickname', name)
+
+  # Вешаем событие на изменение ника:
+  fields.nickname.on('change', (event)->
+    event.preventDefault()
+
+    changeName(this.value)
+  )
+
   # Вешаем событие на форму:
   $('.form').on 'submit', submitForm
 
@@ -96,16 +127,12 @@ $(document).ready ->
   else if $.cookie('nickname')
     nickname = $.cookie('nickname')
   else
-    nickname = prompt('Please enter your nickname')
+    nickname = prompt('Введите ваше имя!')
 
   if !nickname
     nickname = 'UserName' + (new Date()).getUTCMilliseconds()
 
-  if 'localStorage' of window
-    localStorage.setItem 'nickname', nickname
-
-  $('#name').val(nickname)
-  $.cookie('nickname', nickname)
+  changeName(nickname)
 
   # Отправить сообщение на сервер, к которому подключен пользователь
   socket.emit('join', nickname);

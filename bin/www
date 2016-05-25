@@ -20,7 +20,24 @@ app.set('port', port);
  */
 
 var server = http.Server(app);
+var session = require("express-session")({
+  secret: "socket.io-session",
+  resave: true,
+  saveUninitialized: true
+});
+var sharedsession = require("express-socket.io-session");
 var io = require('socket.io')(server);
+
+/**
+ * Use express-session middleware for express:
+ */
+app.use(session);
+
+// Use shared session middleware for socket.io
+// setting autoSave:true
+io.use(sharedsession(session, {
+  autoSave:true
+}));
 
 /**
  * Configure Socket Events:
@@ -54,13 +71,51 @@ io.on('connection', function(socket){
 
   socket.on('join', function(data) {
 
-    console.log(data);
+    username = data;
+
+    var msg = {
+      message: 'Вошёл пользователь: ' + data + '; в чате - ' + Object.keys(io.sockets.connected).length + ' чел.',
+      name: 'ChatBot',
+      date: new Date()
+    };
+
+    io.emit('new message', msg);
+
+    app.locals.redis.lpush('messages', JSON.stringify(msg));
+
+  });
+
+  socket.on('change name', function(data) {
+
+    var old_name = username;
+    username = data;
+
+    var msg = {
+      message: 'Пользователь: ' + old_name + ' сменил имя на ' + username,
+      name: 'ChatBot',
+      date: new Date()
+    };
+
+    io.emit('new message', msg);
+
+    app.locals.redis.lpush('messages', JSON.stringify(msg));
+
+  });
+
+  socket.on('disconnect', function(data) {
+    var msg = {
+      message: 'Вышел пользователь: ' + username + '; в чате - ' + Object.keys(io.sockets.connected).length + ' чел.',
+      name: 'ChatBot',
+      date: new Date()
+    };
+
+    io.emit('new message', msg);
+
+    app.locals.redis.lpush('messages', JSON.stringify(msg));
 
   });
 
   user_count += 1;
-
-  console.log('UserCount: ' + user_count);
 
   socket.on('new message', function(msg){
     console.log(msg);
