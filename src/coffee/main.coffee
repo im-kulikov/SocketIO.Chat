@@ -98,6 +98,9 @@ $(document).ready ->
   else
     nickname = prompt('Please enter your nickname')
 
+  if !nickname
+    nickname = 'UserName' + (new Date()).getUTCMilliseconds()
+
   if 'localStorage' of window
     localStorage.setItem 'nickname', nickname
 
