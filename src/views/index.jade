@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  ul.messages
+    if !!messages
+      each item in messages.reverse()
+        li.messages__item.message
+          span.message__name #{item.name}
+
+          if (!!item.date)
+            span.message__date #{moment(new Date(item.date)).calendar()}
+
+          span.message__content #{item.message}
+
+
+  form.form(action='javascript:void(0);')
+    input.form__input.form__input--name(name="name", id="name", autocomplete='off', placeholder='Имя')
+    input.form__input.form__input--message(name="message", id="message", autocomplete='off', placeholder='Сообщение')
+    button.form__submit(type="submit") Отправить
+
