@@ -13,7 +13,7 @@ var redis = require('redis');
 var redisClient;
 
 /** Используем файловый логгер: */
-var accessLogStream = fs.createWriteStream(__dirname + '/logs/access.log', {flags: 'a'})
+var accessLogStream = fs.createWriteStream(__dirname + '/logs/node-app.log', {flags: 'a'})
 app.use(morgan('combined', {stream: accessLogStream}));
 
 /** Для темплейтов используем jade: */
