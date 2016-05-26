@@ -1,29 +1,22 @@
-# README #
+# SocketIO.Chat #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Simple realisation of chat with NodeJS + SocketIO + Express
 
-### What is this repository for? ###
+### Technologies: ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* NodeJS
+* SocketIO
+* Jade template engine
+* Sass
+* CoffeeScript
+* Redis for store
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* $> git clone <repo-url>
+* $> npm install
+* $> npm start
 
-### Contribution guidelines ###
+### Demo app? ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+Go to my demo app on [chat.kulikov.im](http://chat.kulikov.im)
