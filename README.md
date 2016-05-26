@@ -1,6 +1,6 @@
 # SocketIO.Chat #
 
-Simple realisation of chat with NodeJS + SocketIO + Express
+A simple implementation of the chat using the NodeJS, SocketIO, ExpressJS
 
 ### Technologies: ###
 
