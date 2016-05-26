@@ -20,3 +20,5 @@ A simple implementation of the chat using the NodeJS, SocketIO, ExpressJS
 ### Demo app? ###
 
 Go to my demo app on [chat.kulikov.im](http://chat.kulikov.im)
+
+!["Yandex.Metrika counter"](https://mc.yandex.ru/watch/37586045)
